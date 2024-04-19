@@ -4,11 +4,17 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
-public class Person {
-    private static int age;
+public class Person implements CheckPerson {
+    //private static int age;
 
     public Person() {
         today = LocalDate.now();
+    }
+    public Person(String name, LocalDate birthday, Sex gender, String emailAddress){
+        this.name = name;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.emailAddress = emailAddress;
     }
 
     public void setAge(LocalDate today, LocalDate birthday) {
@@ -46,6 +52,21 @@ public class Person {
         return emailAddress;
     }
 
+    public Sex getGender() {
+        return gender;
+    }
+
+    public void setGender(Sex gender) {
+        this.gender = gender;
+    }
+
+    @Override
+    public boolean test(Person p) {
+        return p.gender == Sex.MALE &&
+                p.getAge(birthday) >= 18 &&
+                p.getAge(birthday) <= 35;
+    }
+
 
     public enum Sex {
         MALE, FEMALE
@@ -55,12 +76,13 @@ public class Person {
     LocalDate birthday;
     Sex gender;
     String emailAddress;
-
     LocalDate today;
 
+
     public void printPerson() {
-        System.out.println();
+        System.out.println("Name: " + name + " Birthday: " + birthday + " Gender: " + gender + " Email: " + emailAddress);
     }
+
 
     public static void printPersons(
             List<Person> roster, CheckPerson tester) {
@@ -68,13 +90,16 @@ public class Person {
             if (tester.test(p)) {
                 p.printPerson();
             }
-
-
         }
     }
+//       this.name = name;
+//       this.birthday = birthday;
+//        this.gender = gender;
+//        this.emailAddress = emailAddress;
+
 
     public static void main(String[] args) {
-    System.out.println(age);
+    System.out.println();
     }
 }
 
