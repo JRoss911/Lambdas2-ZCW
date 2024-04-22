@@ -3,8 +3,12 @@ package main;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Person implements CheckPerson {
+    private static List<Person> roster;
+    private static CheckPerson tester;
     //private static int age;
 
     public Person() {
@@ -86,6 +90,8 @@ public class Person implements CheckPerson {
 
     public static void printPersons(
             List<Person> roster, CheckPerson tester) {
+        Person.roster = roster;
+        Person.tester = tester;
         for (Person p : roster) {
             if (tester.test(p)) {
                 p.printPerson();
@@ -96,10 +102,41 @@ public class Person implements CheckPerson {
 //       this.birthday = birthday;
 //        this.gender = gender;
 //        this.emailAddress = emailAddress;
+public static class GenderDefiner implements CheckPerson { //anonymous class
 
+    @Override
+    public boolean test(Person p) {
+        return switch (p.getGender()) {
+            case MALE, FEMALE -> true;
+            default -> false;
+        };
+    }
+
+    public static class EmailDefiner implements CheckPerson {
+
+        @Override
+        public boolean test(Person p) {
+            Pattern pattern = Pattern.compile("^(.+)@(.+)$");
+
+            try {
+                Matcher matcher = pattern.matcher(p.getEmailAddress());
+                if (matcher.find()) {
+                    return true;
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid email type, please follow username@password type");
+            }
+            return false;
+        }
+}
 
     public static void main(String[] args) {
+    Person Jorden = new Person(){
+
+    };
+
     System.out.println();
     }
+}
 }
 
